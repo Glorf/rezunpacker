@@ -40,10 +40,10 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <algorithm>
 
 void parseEntry(int offset, int maxoffset, std::string workdir);
 
-struct dirent *drnt;
 std::ifstream file;
 
 int main(int argc, char *argv[])
@@ -203,6 +203,9 @@ void parseEntry(int offset, int maxoffset, std::string workdir)
         file.read((char*)&fileID, 4);
         
         std::string fileExtension=parseText(maxoffset);
+
+        std::reverse(fileExtension.begin(), fileExtension.end()); //ugly extension name trick - they're reversed
+
         int null;
         file.read((char*)&null, 4); //Blank *4
         std::string fileName=parseText(maxoffset);
